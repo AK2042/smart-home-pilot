@@ -61,8 +61,7 @@ class ApiService {
     return data;
   }
 
-
-  async addDevice(name: string): Promise<DeviceResponse> {
+  async registerDevice(deviceData: DeviceRegistration): Promise<DeviceResponse> {
     return this.request('/device', {
       method: 'POST',
       body: JSON.stringify(deviceData),
