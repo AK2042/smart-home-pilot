@@ -1,7 +1,7 @@
 
 import { LoginResponse, Device, DeviceResponse } from '../types/auth';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'http://192.168.232.126:8000';
 
 class ApiService {
   private token: string | null = null;
@@ -38,13 +38,16 @@ class ApiService {
   }
 
   async login(username: string, password: string): Promise<LoginResponse> {
-    const formData = new FormData();
+    const formData = new URLSearchParams();
     formData.append('username', username);
     formData.append('password', password);
 
     const response = await fetch(`${API_BASE}/login`, {
-      method: 'POST',
-      body: formData,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: formData
     });
 
     if (!response.ok) {
@@ -57,6 +60,7 @@ class ApiService {
     localStorage.setItem('token', this.token!);
     return data;
   }
+
 
   async addDevice(name: string): Promise<DeviceResponse> {
     return this.request('/device', {
