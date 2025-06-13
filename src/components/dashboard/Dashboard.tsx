@@ -86,7 +86,7 @@ export function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalDevices}</div>
-              <p className="text-xs text-muted-foreground">Connected IoT devices</p>
+              <p className="text-xs text-muted-foreground">Registered IoT devices</p>
             </CardContent>
           </Card>
           
@@ -125,7 +125,7 @@ export function Dashboard() {
               className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
             >
               <Plus className="mr-2 h-4 w-4" />
-              Add Device
+              Register Device
             </Button>
           </div>
 
@@ -144,9 +144,9 @@ export function Dashboard() {
                     <Cpu className="h-8 w-8 text-muted-foreground" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold">No devices yet</h3>
+                    <h3 className="text-lg font-semibold">No devices registered</h3>
                     <p className="text-muted-foreground">
-                      Add your first IoT device to get started
+                      Scan the QR code on your Arduino device to get started
                     </p>
                   </div>
                   <Button 
@@ -154,7 +154,7 @@ export function Dashboard() {
                     className="bg-gradient-to-r from-primary to-purple-600"
                   >
                     <Plus className="mr-2 h-4 w-4" />
-                    Add Your First Device
+                    Register Your First Device
                   </Button>
                 </div>
               </CardContent>

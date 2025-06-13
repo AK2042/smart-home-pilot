@@ -1,5 +1,5 @@
 
-import { LoginResponse, Device, DeviceResponse } from '../types/auth';
+import { LoginResponse, Device, DeviceResponse, DeviceRegistration } from '../types/auth';
 
 const API_BASE = 'http://192.168.232.126:8000';
 
@@ -65,7 +65,7 @@ class ApiService {
   async addDevice(name: string): Promise<DeviceResponse> {
     return this.request('/device', {
       method: 'POST',
-      body: JSON.stringify({ name }),
+      body: JSON.stringify(deviceData),
     });
   }
 

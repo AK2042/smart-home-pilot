@@ -16,8 +16,13 @@ export interface Device {
   state: 'ON' | 'OFF';
 }
 
+export interface DeviceRegistration {
+  id: string;
+  name?: string;
+}
+
 export interface DeviceResponse {
+  message: string;
   device_id: string;
   topic: string;
-  qr: string;
 }
