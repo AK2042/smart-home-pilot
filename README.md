@@ -51,7 +51,6 @@ IoT-Device-Manager
 
    ```env
    MONGO_URI=mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/?retryWrites=true&w=majority
-   SECRET_KEY=your_secret_key
    ```
 
 3. Install dependencies:
