@@ -1,7 +1,7 @@
 
 import { LoginResponse, Device, DeviceResponse, DeviceRegistration } from '../types/auth';
 
-const API_BASE = 'http://192.168.232.126:8000';
+const API_BASE = '<YOUR_API_BASE_URL>';
 
 class ApiService {
   private token: string | null = null;

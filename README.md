@@ -1,73 +1,132 @@
-# Welcome to your Lovable project
+# IoT Device Manager
 
-## Project info
+An end-to-end IoT platform to register, control, and monitor Arduino-powered devices through a FastAPI backend, React frontend, and MQTT-based communication.
 
-**URL**: https://lovable.dev/projects/c5f425c2-64c4-48d7-87b4-c266c6cd5266
+## Project Structure
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/c5f425c2-64c4-48d7-87b4-c266c6cd5266) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+IoT-Device-Manager
+├── Frontend/       # React web app for UI/UX
+├── Backend/        # FastAPI backend with MongoDB and MQTT
+└── Arduino codes/  # Arduino sketch to generate QR and publish state
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Features
 
-**Use GitHub Codespaces**
+* **User Authentication** (Register/Login with JWT)
+* **Add New Devices** by scanning QR codes generated on Arduino
+* **Real-time Device State Toggle** via MQTT
+* **WebSocket-based Live Status Updates**
+* **MongoDB Atlas Integration** to persist users and devices
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## Tech Stack
 
-This project is built with:
+| Layer            | Technology               |
+| ---------------- | ------------------------ |
+| Frontend         | React + Vite             |
+| Backend          | FastAPI + MongoDB        |
+| Realtime         | MQTT (broker.hivemq.com) |
+| Auth             | JWT (via `jose`)         |
+| Password Hashing | `passlib[bcrypt]`        |
+| QR Code Gen      | `qrcode` (Python)        |
+| Device           | Arduino (C++) + QR Lib   |
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## Setup Guide
 
-Simply open [Lovable](https://lovable.dev/projects/c5f425c2-64c4-48d7-87b4-c266c6cd5266) and click on Share -> Publish.
+### Backend Setup
 
-## Can I connect a custom domain to my Lovable project?
+1. Navigate to `backend/`:
 
-Yes, you can!
+   ```bash
+   cd backend
+   ```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+2. Create `.env` file:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+   ```env
+   MONGO_URI=mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/?retryWrites=true&w=majority
+   SECRET_KEY=your_secret_key
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run server:
+
+   ```bash
+   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+   ```
+
+---
+
+### Frontend Setup
+
+1. Navigate to `frontend/`:
+
+   ```bash
+   cd frontend
+   ```
+
+2. In src/services/api.ts, update the base URL to your backend server.
+
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Start development server:
+
+   ```bash
+   npm run dev
+   ```
+
+> Frontend is configured to connect with `http://localhost:8000` by default.
+
+---
+
+### Arduino Setup
+
+* Upload the appropriate sketch from `arduino codes/` to your Arduino.
+* Device generates a **code containing its unique MQTT topic**.
+* Scan this QR on the frontend to register it to your user account.
+
+---
+
+## Authentication Flow
+
+* User logs in → receives JWT token.
+* Token is sent as `Authorization: Bearer <token>` in headers.
+* Backend verifies token before allowing any device operations.
+
+---
+
+## Real-Time Flow
+
+1. Arduino publishes status updates to `home/devices/<device_id>/status`.
+2. FastAPI backend listens and stores state changes.
+3. Frontend connects via WebSocket to `/ws/<device_id>` to receive live updates.
+4. User toggles device from UI → API publishes to `home/devices/<device_id>/set`.
+
+---
+
+## Testing
+
+* You can test MQTT messages manually using tools like MQTT Explorer.
+* WebSocket responses can be tested using browser tools or Postman (newer versions).
+
+---
+
+## License
+
+MIT License. Feel free to contribute or fork!
+
